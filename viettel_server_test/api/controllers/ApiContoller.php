@@ -10,15 +10,15 @@ class ApiController
 			$request = $_POST;
 
 			if (empty($request['telco_type']) || $request['telco_type'] != 'viettel') {
-				echo json_encode(['status' => 1, 'message' => 'Telco is not Viettel']);
+				echo json_encode(['code' => 206]);
 				return false;
 			}
 			if (empty($request['serial_number'])) {
-				echo json_encode(['status' => 2, 'message' => 'Serial number invalid']);
+				echo json_encode(['code' => 204]);
 				return false;
 			}
 			if (empty($request['code_number'])) {
-				echo json_encode(['status' => 3, 'message' => 'Code invalid']);
+				echo json_encode(['code' => 204]);
 				return false;
 			}
 
@@ -26,10 +26,10 @@ class ApiController
 
 			$check_code = $model->checkCodeNumber($request['serial_number'], $request['code_number']);
 			if (!empty($check_code)) {
-				echo json_encode(['status' => 4, 'message' => 'Success', 'money' => $check_code['price']]);
+				echo json_encode(['code' => 200, 'money' => $check_code['price']]);
 				// return false;
 			} else {
-				echo json_encode(['status' => 5, 'message' => 'Code number not found']);
+				echo json_encode(['code' => 404]);
 				// return false;
 			}
 		}
